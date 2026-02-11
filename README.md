@@ -46,6 +46,14 @@ Services:
 - Redis: `localhost:6379`
 - MongoDB: `localhost:27017`
 
+## DataSource Defaults
+- Hikari pool name: `EventManagementHikariPool`
+- Hikari minimum idle: `5`
+- Hikari maximum pool size: `20`
+- Hikari connection timeout: `30000ms`
+- JDBC connect timeout: `5000ms`
+- JDBC read/socket timeout: `30000ms`
+
 ## Observability and Resilience
 - Actuator endpoints:
   - `/actuator/health`

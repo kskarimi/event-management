@@ -6,6 +6,17 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:event_user}
     password: ${SPRING_DATASOURCE_PASSWORD:event_pass}
     driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      pool-name: EventManagementHikariPool
+      minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}
+      maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:20}
+      connection-timeout: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:30000}
+      validation-timeout: ${SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT:5000}
+      idle-timeout: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT:600000}
+      max-lifetime: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME:1800000}
+      data-source-properties:
+        connectTimeout: ${SPRING_DATASOURCE_CONNECT_TIMEOUT:5000}
+        socketTimeout: ${SPRING_DATASOURCE_READ_TIMEOUT:30000}
   jpa:
     hibernate:
       ddl-auto: validate
