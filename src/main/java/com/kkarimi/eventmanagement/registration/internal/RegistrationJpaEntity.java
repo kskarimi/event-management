@@ -4,12 +4,21 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "registrations")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 class RegistrationJpaEntity {
 
     @Id
@@ -24,29 +33,4 @@ class RegistrationJpaEntity {
     @Column(nullable = false)
     private Instant registeredAt;
 
-    protected RegistrationJpaEntity() {
-    }
-
-    RegistrationJpaEntity(UUID id, UUID eventId, UUID attendeeId, Instant registeredAt) {
-        this.id = id;
-        this.eventId = eventId;
-        this.attendeeId = attendeeId;
-        this.registeredAt = registeredAt;
-    }
-
-    UUID getId() {
-        return id;
-    }
-
-    UUID getEventId() {
-        return eventId;
-    }
-
-    UUID getAttendeeId() {
-        return attendeeId;
-    }
-
-    Instant getRegisteredAt() {
-        return registeredAt;
-    }
 }

@@ -7,6 +7,7 @@ import com.kkarimi.eventmanagement.notifications.NotificationGateway;
 import com.kkarimi.eventmanagement.registration.Registration;
 import com.kkarimi.eventmanagement.registration.RegistrationApplication;
 import com.kkarimi.eventmanagement.registration.RegistrationCommand;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,24 +17,14 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 class RegistrationApplicationService implements RegistrationApplication {
 
     private final EventCatalog eventCatalog;
     private final AttendeeDirectory attendeeDirectory;
     private final NotificationGateway notificationGateway;
     private final RegistrationJpaRepository repository;
-
-    RegistrationApplicationService(
-            EventCatalog eventCatalog,
-            AttendeeDirectory attendeeDirectory,
-            NotificationGateway notificationGateway,
-            RegistrationJpaRepository repository
-    ) {
-        this.eventCatalog = eventCatalog;
-        this.attendeeDirectory = attendeeDirectory;
-        this.notificationGateway = notificationGateway;
-        this.repository = repository;
-    }
+    private final RegistrationMapper mapper;
 
     @Override
     @Transactional
@@ -57,12 +48,7 @@ class RegistrationApplicationService implements RegistrationApplication {
                 command.attendeeId(),
                 Instant.now()
         );
-        repository.save(new RegistrationJpaEntity(
-                registration.id(),
-                registration.eventId(),
-                registration.attendeeId(),
-                registration.registeredAt()
-        ));
+        repository.save(mapper.toEntity(registration));
         notificationGateway.sendRegistrationConfirmation(registration);
         return registration;
     }
@@ -70,16 +56,7 @@ class RegistrationApplicationService implements RegistrationApplication {
     @Override
     public List<Registration> findAll() {
         return repository.findAll().stream()
-                .map(this::toModel)
+                .map(mapper::toModel)
                 .toList();
-    }
-
-    private Registration toModel(RegistrationJpaEntity entity) {
-        return new Registration(
-                entity.getId(),
-                entity.getEventId(),
-                entity.getAttendeeId(),
-                entity.getRegisteredAt()
-        );
     }
 }

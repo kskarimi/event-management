@@ -5,12 +5,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "events")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 class EventJpaEntity {
 
     @Id
@@ -31,38 +40,4 @@ class EventJpaEntity {
     @Version
     private Long version;
 
-    protected EventJpaEntity() {
-    }
-
-    EventJpaEntity(UUID id, String title, LocalDateTime startsAt, int capacity, int reservedSeats) {
-        this.id = id;
-        this.title = title;
-        this.startsAt = startsAt;
-        this.capacity = capacity;
-        this.reservedSeats = reservedSeats;
-    }
-
-    UUID getId() {
-        return id;
-    }
-
-    String getTitle() {
-        return title;
-    }
-
-    LocalDateTime getStartsAt() {
-        return startsAt;
-    }
-
-    int getCapacity() {
-        return capacity;
-    }
-
-    int getReservedSeats() {
-        return reservedSeats;
-    }
-
-    void setReservedSeats(int reservedSeats) {
-        this.reservedSeats = reservedSeats;
-    }
 }

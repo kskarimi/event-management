@@ -4,6 +4,7 @@ import com.kkarimi.eventmanagement.events.Event;
 import com.kkarimi.eventmanagement.events.EventCatalog;
 import com.kkarimi.eventmanagement.events.NewEventCommand;
 import com.kkarimi.eventmanagement.metrics.MeasuredOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 class EventCatalogService implements EventCatalog {
 
     private final EventJpaRepository repository;
-
-    EventCatalogService(EventJpaRepository repository) {
-        this.repository = repository;
-    }
+    private final EventMapper mapper;
 
     @Override
     @Transactional
@@ -36,21 +35,15 @@ class EventCatalogService implements EventCatalog {
             throw new IllegalArgumentException("Event capacity must be greater than zero");
         }
         UUID id = UUID.randomUUID();
-        EventJpaEntity entity = new EventJpaEntity(
-                id,
-                command.title(),
-                command.startsAt(),
-                command.capacity(),
-                0
-        );
-        return toModel(repository.save(entity));
+        EventJpaEntity entity = mapper.toEntity(id, command);
+        return mapper.toModel(repository.save(entity));
     }
 
     @Override
     @Cacheable(cacheNames = "eventById", key = "#eventId")
     @MeasuredOperation(timer = "event.lookup.duration")
     public Optional<Event> findById(UUID eventId) {
-        return repository.findById(eventId).map(this::toModel);
+        return repository.findById(eventId).map(mapper::toModel);
     }
 
     @Override
@@ -65,7 +58,7 @@ class EventCatalogService implements EventCatalog {
         }
 
         entity.setReservedSeats(entity.getReservedSeats() + 1);
-        return toModel(entity);
+        return mapper.toModel(entity);
     }
 
     @Override
@@ -73,18 +66,8 @@ class EventCatalogService implements EventCatalog {
     @MeasuredOperation(timer = "event.lookup.duration")
     public List<Event> findAll() {
         return repository.findAll().stream()
-                .map(this::toModel)
+                .map(mapper::toModel)
                 .sorted(Comparator.comparing(Event::startsAt))
                 .toList();
-    }
-
-    private Event toModel(EventJpaEntity entity) {
-        return new Event(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getStartsAt(),
-                entity.getCapacity(),
-                entity.getReservedSeats()
-        );
     }
 }
