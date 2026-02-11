@@ -3,14 +3,12 @@ package com.kkarimi.eventmanagement.notifications.internal;
 import com.kkarimi.eventmanagement.notifications.NotificationGateway;
 import com.kkarimi.eventmanagement.registration.Registration;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 class LoggingNotificationGateway implements NotificationGateway {
-
-    private static final Logger log = LoggerFactory.getLogger(LoggingNotificationGateway.class);
 
     @Override
     @CircuitBreaker(name = "notificationService", fallbackMethod = "fallbackSendRegistrationConfirmation")

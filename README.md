@@ -52,6 +52,9 @@ Services:
   - `/actuator/metrics`
   - `/actuator/prometheus`
   - `/actuator/circuitbreakers`
+- Logging:
+  - Structured console format with `traceId` and `spanId`
+  - Root log level is `ERROR`
 - Circuit breaker name for notifications: `notificationService`
 - Customer API rate limit:
   - Fixed window, per client IP
@@ -64,7 +67,9 @@ Workflow:
 - `.github/workflows/maven-ci-cd.yml`
 
 Behavior:
-- CI on push/PR: `mvn clean verify` (tests + Checkstyle)
+- CI on push/PR:
+  - Build job: `mvn clean package -DskipTests`
+  - Test/style job: `mvn verify` (tests + Checkstyle)
 - Release on version tags (`v*`):
   - `mvn clean deploy -DskipTests`
   - Publish Maven package to GitHub Packages
