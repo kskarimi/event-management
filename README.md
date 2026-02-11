@@ -22,3 +22,13 @@ mvn spring-boot:run
 ```
 
 API base path: `/api`
+
+## Docker Compose (MariaDB + Redis + App)
+```bash
+docker compose up --build
+```
+
+Services:
+- App: `http://localhost:8080`
+- MariaDB: `localhost:3306`
+- Redis: `localhost:6379`
