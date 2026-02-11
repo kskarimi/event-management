@@ -74,6 +74,9 @@ resilience4j:
         waitDurationInOpenState: 10s
 
 app:
+  logging:
+    http:
+      max-body-length: ${APP_LOGGING_HTTP_MAX_BODY_LENGTH:2000}
   rate-limit:
     customer-api:
       requests-per-minute: 60
@@ -91,5 +94,6 @@ logging:
     root: ERROR
     org.springframework: OFF
     com.kkarimi.eventmanagement.startup: INFO
+    com.kkarimi.eventmanagement.web.HttpRequestLoggingFilter: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [traceId=%X{traceId:-},spanId=%X{spanId:-}] %logger{40} - %msg%n"

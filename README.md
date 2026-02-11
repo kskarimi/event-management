@@ -56,6 +56,10 @@ Services:
 - JDBC connect timeout: `5000ms`
 - JDBC read/socket timeout: `30000ms`
 
+## Redis Cache Defaults
+- Cache values use JSON serialization (`GenericJackson2JsonRedisSerializer`)
+- Avoids Java `Serializable` requirement for cached domain records
+
 ## Observability and Resilience
 - Actuator endpoints:
   - `/actuator/health`
@@ -67,6 +71,8 @@ Services:
   - Root log level is `ERROR`
   - Spring framework logs are disabled in console (`org.springframework=OFF`)
   - Spring banner/startup-info logs are disabled
+  - HTTP request logs include method, path, request body, response status, and duration
+  - Request body log size is capped (default `2000` chars, configurable via `APP_LOGGING_HTTP_MAX_BODY_LENGTH`)
   - Startup summary logs include startup duration, runtime, profiles, and key endpoints/configs
   - Response trace headers: `X-Trace-Id`, `X-Span-Id`
 - Circuit breaker name for notifications: `notificationService`
