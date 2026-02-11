@@ -2,6 +2,8 @@ package com.kkarimi.eventmanagement.startup;
 
 import java.net.InetAddress;
 import java.time.Duration;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,6 +18,7 @@ class StartupLoggingListener {
     private static final String DEFAULT_HTTP_PORT = "8080";
 
     private final Environment environment;
+    private final Tracer tracer;
 
     @Value("${spring.application.name:event-management}")
     private String applicationName;
@@ -26,12 +29,22 @@ class StartupLoggingListener {
     @Value("${app.rate-limit.customer-api.requests-per-minute:60}")
     private int customerApiRateLimit;
 
-    StartupLoggingListener(Environment environment) {
+    StartupLoggingListener(Environment environment, Tracer tracer) {
         this.environment = environment;
+        this.tracer = tracer;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady(ApplicationReadyEvent event) {
+        Span startupSpan = tracer.nextSpan().name("application-startup").start();
+        try (Tracer.SpanInScope ignored = tracer.withSpan(startupSpan)) {
+            logStartupSummary(event);
+        } finally {
+            startupSpan.end();
+        }
+    }
+
+    private void logStartupSummary(ApplicationReadyEvent event) {
         Duration startupDuration = event.getTimeTaken();
         String startupTime = startupDuration == null ? "unknown" : startupDuration.toMillis() + " ms";
         String[] profiles = environment.getActiveProfiles();
