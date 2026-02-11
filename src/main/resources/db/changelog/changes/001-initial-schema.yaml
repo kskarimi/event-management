@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-events
+      author: codex
+      changes:
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: id
+                  type: BINARY(16)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: starts_at
+                  type: DATETIME(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: capacity
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reserved_seats
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: BIGINT
+
+  - changeSet:
+      id: 002-create-attendees
+      author: codex
+      changes:
+        - createTable:
+            tableName: attendees
+            columns:
+              - column:
+                  name: id
+                  type: BINARY(16)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: attendees
+            columnNames: email
+            constraintName: uk_attendees_email
+
+  - changeSet:
+      id: 003-create-registrations
+      author: codex
+      changes:
+        - createTable:
+            tableName: registrations
+            columns:
+              - column:
+                  name: id
+                  type: BINARY(16)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: BINARY(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: attendee_id
+                  type: BINARY(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: registered_at
+                  type: TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: registrations
+            indexName: idx_registrations_event_id
+            columns:
+              - column:
+                  name: event_id
+        - createIndex:
+            tableName: registrations
+            indexName: idx_registrations_attendee_id
+            columns:
+              - column:
+                  name: attendee_id
