@@ -1,0 +1,60 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-add-audit-columns-events
+      author: codex
+      changes:
+        - addColumn:
+            tableName: events
+            columns:
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 005-add-audit-columns-attendees
+      author: codex
+      changes:
+        - addColumn:
+            tableName: attendees
+            columns:
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 006-add-audit-columns-registrations
+      author: codex
+      changes:
+        - addColumn:
+            tableName: registrations
+            columns:
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false

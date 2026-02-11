@@ -56,6 +56,13 @@ Services:
 - JDBC connect timeout: `5000ms`
 - JDBC read/socket timeout: `30000ms`
 
+## Database Auditing
+- JPA auditing is enabled for core tables: `events`, `attendees`, `registrations`
+- Audit columns:
+  - `created_at`
+  - `updated_at`
+- Audit values are populated automatically on insert/update.
+
 ## Redis Cache Defaults
 - Cache values use JSON serialization (`GenericJackson2JsonRedisSerializer`)
 - Avoids Java `Serializable` requirement for cached domain records

@@ -15,5 +15,7 @@ interface AttendeeMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "fullName", source = "command.fullName")
     @Mapping(target = "email", source = "command.email")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     AttendeeJpaEntity toEntity(UUID id, NewAttendeeCommand command);
 }

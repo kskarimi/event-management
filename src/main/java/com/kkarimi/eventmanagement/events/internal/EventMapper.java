@@ -18,5 +18,7 @@ interface EventMapper {
     @Mapping(target = "capacity", source = "command.capacity")
     @Mapping(target = "reservedSeats", constant = "0")
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     EventJpaEntity toEntity(UUID id, NewEventCommand command);
 }
