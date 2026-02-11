@@ -1,4 +1,4 @@
-package com.kkarimi.eventmanagement.datashipper;
+package com.kkarimi.eventmanagement.eventhistory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class ChangeHistoryEventListener {
+class EventHistoryEventListener {
 
-    private final ChangeHistoryRepository repository;
+    private final EventHistoryRepository repository;
 
     @Async
     @EventListener
-    public void onDataChanged(DataChangedEvent event) {
-        repository.save(ChangeHistoryDocument.builder()
+    public void onEventHistoryRecorded(EventHistoryRecordedEvent event) {
+        repository.save(EventHistoryDocument.builder()
                 .module(event.module())
                 .action(event.action())
                 .entity(event.entity())

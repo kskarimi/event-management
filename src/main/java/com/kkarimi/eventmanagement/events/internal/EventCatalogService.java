@@ -1,6 +1,6 @@
 package com.kkarimi.eventmanagement.events.internal;
 
-import com.kkarimi.eventmanagement.datashipper.TrackDataChange;
+import com.kkarimi.eventmanagement.eventhistory.TrackEventHistory;
 import com.kkarimi.eventmanagement.events.Event;
 import com.kkarimi.eventmanagement.events.EventCatalog;
 import com.kkarimi.eventmanagement.events.NewEventCommand;
@@ -31,7 +31,7 @@ class EventCatalogService implements EventCatalog {
             timer = "event.create.duration",
             successCounter = "event.created.total"
     )
-    @TrackDataChange(module = "events", action = "create", entity = "event")
+    @TrackEventHistory(module = "events", action = "create", entity = "event")
     public Event create(NewEventCommand command) {
         if (command.capacity() <= 0) {
             throw new IllegalArgumentException("Event capacity must be greater than zero");
@@ -51,7 +51,7 @@ class EventCatalogService implements EventCatalog {
     @Override
     @Transactional
     @CacheEvict(cacheNames = {"eventById", "eventList"}, allEntries = true)
-    @TrackDataChange(module = "events", action = "reserve-seat", entity = "event")
+    @TrackEventHistory(module = "events", action = "reserve-seat", entity = "event")
     public Event reserveSeat(UUID eventId) {
         EventJpaEntity entity = repository.findByIdForUpdate(eventId)
                 .orElseThrow(() -> new NoSuchElementException("Event not found: " + eventId));

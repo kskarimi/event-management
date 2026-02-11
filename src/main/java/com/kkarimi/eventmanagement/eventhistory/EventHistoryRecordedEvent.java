@@ -1,8 +1,8 @@
-package com.kkarimi.eventmanagement.datashipper;
+package com.kkarimi.eventmanagement.eventhistory;
 
 import java.time.Instant;
 
-public record DataChangedEvent(
+public record EventHistoryRecordedEvent(
         String module,
         String action,
         String entity,

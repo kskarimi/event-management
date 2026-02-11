@@ -1,4 +1,4 @@
-package com.kkarimi.eventmanagement.datashipper;
+package com.kkarimi.eventmanagement.eventhistory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,8 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "change_history")
-class ChangeHistoryDocument {
+@Document(collection = "event_history")
+class EventHistoryDocument {
 
     @Id
     private String id;

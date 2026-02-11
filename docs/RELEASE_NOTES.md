@@ -6,7 +6,7 @@
 - Built a modular event-management backend with Spring Modulith.
 - Added persistent storage with MariaDB and Liquibase-managed schema migrations.
 - Added Redis caching for event read operations.
-- Added MongoDB-backed `datashipper` module for async historical change tracking.
+- Added MongoDB-backed `eventhistory` module for async historical change tracking.
 - Added AOP-based metrics collection with Micrometer and Actuator endpoints.
 - Added Resilience4j circuit breaker on notification external-call boundary.
 - Added per-IP customer API rate limiting for attendee/registration endpoints.

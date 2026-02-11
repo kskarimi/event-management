@@ -1,4 +1,4 @@
-package com.kkarimi.eventmanagement.datashipper;
+package com.kkarimi.eventmanagement.eventhistory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,19 +14,22 @@ import java.time.Instant;
 @Aspect
 @Component
 @RequiredArgsConstructor
-class ChangeTrackingAspect {
+class EventHistoryTrackingAspect {
 
     private final ApplicationEventPublisher eventPublisher;
     private final ObjectMapper objectMapper;
 
-    @Around("@annotation(trackDataChange)")
-    public Object captureChange(ProceedingJoinPoint joinPoint, TrackDataChange trackDataChange) throws Throwable {
+    @Around("@annotation(trackEventHistory)")
+    public Object captureEventHistory(
+            ProceedingJoinPoint joinPoint,
+            TrackEventHistory trackEventHistory
+    ) throws Throwable {
         Object result = joinPoint.proceed();
 
-        DataChangedEvent event = new DataChangedEvent(
-                trackDataChange.module(),
-                trackDataChange.action(),
-                trackDataChange.entity(),
+        EventHistoryRecordedEvent event = new EventHistoryRecordedEvent(
+                trackEventHistory.module(),
+                trackEventHistory.action(),
+                trackEventHistory.entity(),
                 Instant.now(),
                 toJson(joinPoint.getArgs()),
                 toJson(result)

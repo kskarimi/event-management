@@ -26,7 +26,7 @@ This project demonstrates a production-oriented modular monolith design for inte
 
 3. `registration`
 - Responsibility: register attendee to event.
-- Dependencies: `events`, `attendees`, `notifications`, `datashipper`.
+- Dependencies: `events`, `attendees`, `notifications`, `eventhistory`.
 - API: `RegistrationApplication`, `Registration`, `RegistrationCommand`.
 
 4. `notifications`
@@ -34,12 +34,12 @@ This project demonstrates a production-oriented modular monolith design for inte
 - API: `NotificationGateway`.
 - Resilience: Resilience4j circuit breaker (`notificationService`).
 
-5. `datashipper`
+5. `eventhistory`
 - Responsibility: async change contract and historical change storage.
 - Contract mechanism: Spring Application Events.
-- AOP capture annotation: `@TrackDataChange`.
-- Event: `DataChangedEvent`.
-- Storage: MongoDB collection `change_history`.
+- AOP capture annotation: `@TrackEventHistory`.
+- Event: `EventHistoryRecordedEvent`.
+- Storage: MongoDB collection `event_history`.
 
 6. `metrics`
 - Responsibility: centralized metric instrumentation via AOP.
@@ -53,7 +53,7 @@ This project demonstrates a production-oriented modular monolith design for inte
 - MariaDB: system of record for `events`, `attendees`, `registrations`.
 - Liquibase: schema migration source of truth.
 - Redis: Spring Cache backend.
-- MongoDB: change history for `datashipper` module.
+- MongoDB: change history for `eventhistory` module.
 
 Runtime configuration:
 - `src/main/resources/application.yml`
@@ -66,21 +66,21 @@ CI and release:
 - CI: run tests on push/PR
 - Release: on tag `v*`, deploy Maven package to GitHub Packages and publish GitHub Release
 
-## Async Contract Flow (Data Shipper)
+## Async Contract Flow (Event History)
 ```mermaid
 sequenceDiagram
     participant Service as "Domain Service (events/attendees/registration)"
-    participant Aspect as "ChangeTrackingAspect"
+    participant Aspect as "EventHistoryTrackingAspect"
     participant AppEvent as "ApplicationEventPublisher"
-    participant Listener as "ChangeHistoryEventListener (@Async)"
-    participant Mongo as "MongoDB change_history"
+    participant Listener as "EventHistoryEventListener (@Async)"
+    participant Mongo as "MongoDB event_history"
 
-    Service->>Aspect: Method with @TrackDataChange
+    Service->>Aspect: Method with @TrackEventHistory
     Aspect->>Service: proceed()
     Service-->>Aspect: result
-    Aspect->>AppEvent: publish DataChangedEvent
+    Aspect->>AppEvent: publish EventHistoryRecordedEvent
     AppEvent-->>Listener: dispatch event
-    Listener->>Mongo: save ChangeHistoryDocument
+    Listener->>Mongo: save EventHistoryDocument
 ```
 
 ## Registration Flow (Business)
@@ -104,7 +104,7 @@ sequenceDiagram
 
 ## Key Cross-Cutting Patterns
 - AOP Metrics: `@MeasuredOperation`
-- AOP Change Capture: `@TrackDataChange`
+- AOP Change Capture: `@TrackEventHistory`
 - Async internal contract: Spring application events
 - Resilience: circuit breaker for external notification call
 - Protection: fixed-window per-IP rate limiting for customer APIs

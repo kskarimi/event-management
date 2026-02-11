@@ -1,6 +1,6 @@
 package com.kkarimi.eventmanagement.attendees.internal;
 
-import com.kkarimi.eventmanagement.datashipper.TrackDataChange;
+import com.kkarimi.eventmanagement.eventhistory.TrackEventHistory;
 import com.kkarimi.eventmanagement.attendees.Attendee;
 import com.kkarimi.eventmanagement.attendees.AttendeeDirectory;
 import com.kkarimi.eventmanagement.attendees.NewAttendeeCommand;
@@ -21,7 +21,7 @@ class AttendeeDirectoryService implements AttendeeDirectory {
 
     @Override
     @Transactional
-    @TrackDataChange(module = "attendees", action = "register", entity = "attendee")
+    @TrackEventHistory(module = "attendees", action = "register", entity = "attendee")
     public Attendee register(NewAttendeeCommand command) {
         UUID id = UUID.randomUUID();
         AttendeeJpaEntity entity = mapper.toEntity(id, command);

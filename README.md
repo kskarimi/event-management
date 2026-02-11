@@ -1,6 +1,6 @@
 # Event Management (Spring Modulith)
 
-Modular monolith for event management with async data shipping, observability, resilience, and persistence.
+Modular monolith for event management with async event history tracking, observability, resilience, and persistence.
 
 ## Stack
 - Java 25
@@ -96,5 +96,5 @@ mvn -DskipTests deploy
 ## Tests
 - Unit tests are available for:
   - core service logic (`events`, `attendees`, `registration`)
-  - data change tracking aspect (`datashipper`)
+  - data change tracking aspect (`eventhistory`)
   - customer API rate-limit filter

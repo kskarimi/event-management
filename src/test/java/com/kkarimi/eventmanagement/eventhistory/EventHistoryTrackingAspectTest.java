@@ -1,4 +1,4 @@
-package com.kkarimi.eventmanagement.datashipper;
+package com.kkarimi.eventmanagement.eventhistory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ChangeTrackingAspectTest {
+class EventHistoryTrackingAspectTest {
 
     @Mock
     private ProceedingJoinPoint joinPoint;
@@ -26,22 +26,22 @@ class ChangeTrackingAspectTest {
     private ApplicationEventPublisher eventPublisher;
 
     @Test
-    void shouldPublishDataChangedEventAfterSuccessfulExecution() throws Throwable {
-        ChangeTrackingAspect aspect = new ChangeTrackingAspect(eventPublisher, new ObjectMapper());
+    void shouldPublishEventHistoryRecordedEventAfterSuccessfulExecution() throws Throwable {
+        EventHistoryTrackingAspect aspect = new EventHistoryTrackingAspect(eventPublisher, new ObjectMapper());
         Method method = TestTarget.class.getDeclaredMethod("trackedMethod");
-        TrackDataChange annotation = method.getAnnotation(TrackDataChange.class);
+        TrackEventHistory annotation = method.getAnnotation(TrackEventHistory.class);
 
         when(joinPoint.proceed()).thenReturn("ok");
         when(joinPoint.getArgs()).thenReturn(new Object[]{"payload"});
 
-        Object result = aspect.captureChange(joinPoint, annotation);
+        Object result = aspect.captureEventHistory(joinPoint, annotation);
 
         assertEquals("ok", result);
 
-        ArgumentCaptor<DataChangedEvent> captor = ArgumentCaptor.forClass(DataChangedEvent.class);
+        ArgumentCaptor<EventHistoryRecordedEvent> captor = ArgumentCaptor.forClass(EventHistoryRecordedEvent.class);
         verify(eventPublisher).publishEvent(captor.capture());
 
-        DataChangedEvent event = captor.getValue();
+        EventHistoryRecordedEvent event = captor.getValue();
         assertEquals("registration", event.module());
         assertEquals("create", event.action());
         assertEquals("registration", event.entity());
@@ -51,7 +51,7 @@ class ChangeTrackingAspectTest {
     }
 
     private static class TestTarget {
-        @TrackDataChange(module = "registration", action = "create", entity = "registration")
+        @TrackEventHistory(module = "registration", action = "create", entity = "registration")
         void trackedMethod() {
         }
     }
