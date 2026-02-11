@@ -31,11 +31,30 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,metrics,prometheus,circuitbreakers
   endpoint:
     health:
       show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
   prometheus:
     metrics:
       export:
         enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      notificationService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+
+app:
+  rate-limit:
+    customer-api:
+      requests-per-minute: 60
