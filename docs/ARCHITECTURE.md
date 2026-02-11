@@ -51,10 +51,10 @@ This project demonstrates a production-oriented modular monolith design for inte
 - MongoDB: change history for `datashipper` module.
 
 Runtime configuration:
-- `/Users/karim/Public/event-management/src/main/resources/application.yml`
+- `src/main/resources/application.yml`
 
 Container runtime:
-- `/Users/karim/Public/event-management/docker-compose.yml`
+- `docker-compose.yml`
 
 ## Async Contract Flow (Data Shipper)
 ```mermaid

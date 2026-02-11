@@ -16,9 +16,9 @@ Modular monolith for event management with async change shipping, observability,
 - Lombok + MapStruct
 
 ## Main Docs
-- Architecture: `/Users/karim/Public/event-management/docs/ARCHITECTURE.md`
-- API + curl: `/Users/karim/Public/event-management/docs/API.md`
-- Postman collection: `/Users/karim/Public/event-management/docs/postman/event-management.postman_collection.json`
+- Architecture: `docs/ARCHITECTURE.md`
+- API + curl: `docs/API.md`
+- Postman collection: `docs/postman/event-management.postman_collection.json`
 
 ## Run Locally
 ```bash
