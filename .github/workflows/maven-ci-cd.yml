@@ -24,8 +24,8 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Run tests
-        run: mvn -B -ntp clean test
+      - name: Run verify (tests + style checks)
+        run: mvn -B -ntp clean verify
 
   release:
     name: Release - Package & Publish

@@ -64,7 +64,7 @@ Workflow:
 - `.github/workflows/maven-ci-cd.yml`
 
 Behavior:
-- CI on push/PR: `mvn clean test`
+- CI on push/PR: `mvn clean verify` (tests + Checkstyle)
 - Release on version tags (`v*`):
   - `mvn clean deploy -DskipTests`
   - Publish Maven package to GitHub Packages
