@@ -23,6 +23,11 @@ mvn spring-boot:run
 
 API base path: `/api`
 
+Actuator endpoints:
+- `/actuator/health`
+- `/actuator/metrics`
+- `/actuator/prometheus`
+
 ## Docker Compose (MariaDB + Redis + App)
 ```bash
 docker compose up --build

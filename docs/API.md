@@ -65,3 +65,16 @@ curl 'http://localhost:8080/api/registrations'
 - `200 OK`: Request successful.
 - `404 Not Found`: Event or attendee not found.
 - `409 Conflict`: No seat available for event.
+
+## Monitoring and Metrics
+- `GET /actuator/health`
+- `GET /actuator/metrics`
+- `GET /actuator/prometheus`
+
+Custom business metrics:
+- `event.created.total`
+- `event.create.duration`
+- `event.lookup.duration`
+- `registration.created.total`
+- `registration.failed.total`
+- `registration.process.duration`

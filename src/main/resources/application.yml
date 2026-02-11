@@ -19,3 +19,16 @@ spring:
     type: redis
     redis:
       time-to-live: 10m
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
