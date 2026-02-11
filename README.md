@@ -37,3 +37,4 @@ Services:
 - App: `http://localhost:8080`
 - MariaDB: `localhost:3306`
 - Redis: `localhost:6379`
+- MongoDB: `localhost:27017`

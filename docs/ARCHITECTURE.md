@@ -38,6 +38,14 @@ Modules:
 - Dependencies: `events`, `attendees`, `registration`.
 - Controllers: `EventController`, `AttendeeController`, `RegistrationController`.
 
+6. `changeshipping`
+- Responsibility: asynchronously ship data-change contracts across modules through application events and keep change history.
+- Storage: MongoDB collection `change_history`.
+- Mechanism:
+  - Other modules mark mutating methods with `@TrackDataChange`.
+  - `ChangeTrackingAspect` publishes `DataChangedEvent`.
+  - `ChangeHistoryEventListener` handles event asynchronously and persists history.
+
 ## Why this structure is good for interviews
 - Clear module boundaries with explicit dependencies.
 - Internal implementations hidden in `.internal` packages.
@@ -47,6 +55,7 @@ Modules:
 ## Infrastructure Integration
 - MariaDB is used as the system of record through Spring Data JPA.
 - Redis is used for Spring Cache (event lookup/list caching).
+- MongoDB is used by `changeshipping` module for historical change data.
 - Configuration is in `/Users/karim/Public/event-management/src/main/resources/application.yml`.
 - Container runtime setup is in `/Users/karim/Public/event-management/docker-compose.yml`.
 

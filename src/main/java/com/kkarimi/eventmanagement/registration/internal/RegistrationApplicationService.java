@@ -1,6 +1,7 @@
 package com.kkarimi.eventmanagement.registration.internal;
 
 import com.kkarimi.eventmanagement.attendees.AttendeeDirectory;
+import com.kkarimi.eventmanagement.changeshipping.TrackDataChange;
 import com.kkarimi.eventmanagement.events.EventCatalog;
 import com.kkarimi.eventmanagement.metrics.MeasuredOperation;
 import com.kkarimi.eventmanagement.notifications.NotificationGateway;
@@ -33,6 +34,7 @@ class RegistrationApplicationService implements RegistrationApplication {
             successCounter = "registration.created.total",
             failureCounter = "registration.failed.total"
     )
+    @TrackDataChange(module = "registration", action = "create", entity = "registration")
     public Registration register(RegistrationCommand command) {
         eventCatalog.findById(command.eventId())
                 .orElseThrow(() -> new NoSuchElementException("Event not found: " + command.eventId()));
