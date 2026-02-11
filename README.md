@@ -19,6 +19,8 @@ Modular monolith for event management with async data shipping, observability, r
 - Architecture: `docs/ARCHITECTURE.md`
 - API + curl: `docs/API.md`
 - Postman collection: `docs/postman/event-management.postman_collection.json`
+- Release notes: `docs/RELEASE_NOTES.md`
+
 
 ## Project Coordinates
 - `groupId`: `com.kkarimi`
